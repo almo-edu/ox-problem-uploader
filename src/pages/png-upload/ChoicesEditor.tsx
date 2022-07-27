@@ -1,28 +1,29 @@
-import { Divider, Input, Select, Switch, Tag } from "antd"
-import { useGetUnitListofCurrentSubject } from "atoms"
-import { examPNGProblemsState, useSetChoices } from "atoms/pngPhotos"
-import { Box, Text } from "materials"
-import { Fragment } from "react"
-import { useRecoilValue } from "recoil"
+import { Divider, Input, Select, Switch, Tag } from "antd";
+import { useGetUnitListofCurrentSubject } from "atoms";
+import { examPNGProblemsState, useSetChoices } from "atoms/pngPhotos";
+import { Box, Text } from "materials";
+import { Fragment } from "react";
+import { useRecoilValue } from "recoil";
 
 interface ChoicesEditorProps {
-    index: number
+    index: number;
 }
 const { Option } = Select;
 
-export const ChoicesEditor = ({index:problem_index}:ChoicesEditorProps) => {
-    const {choices, photo, useImage} = useRecoilValue(examPNGProblemsState)[problem_index]
-    const getSetter = useSetChoices()
+export const ChoicesEditor = ({ index: problem_index }: ChoicesEditorProps) => {
+    const { choices, photo, useImage } =
+        useRecoilValue(examPNGProblemsState)[problem_index];
+    const getSetter = useSetChoices();
     const {
         setQuestion,
         setAnswer,
         setSolution,
         // setPhoto,
         setDescription,
-        setUnitinfo
-    } = getSetter(problem_index)
+        setUnitinfo,
+    } = getSetter(problem_index);
 
-    const units = useGetUnitListofCurrentSubject()
+    const units = useGetUnitListofCurrentSubject();
 
     // @TODO: 전체 Remove
     // const [tempPhoto, setTempPhoto] = useState<IPhoto>(photo)
@@ -31,9 +32,9 @@ export const ChoicesEditor = ({index:problem_index}:ChoicesEditorProps) => {
     //     getCroppedImg(photo)
     //         .then((res) =>
     //              setTempPhoto({
-    //                 ...res, 
+    //                 ...res,
     //                 crop: {
-    //                     unit: "%", 
+    //                     unit: "%",
     //                     x:0,
     //                     y:0,
     //                     width: 100,
@@ -51,7 +52,7 @@ export const ChoicesEditor = ({index:problem_index}:ChoicesEditorProps) => {
     // for 세부 이미지
     // const [targetChoiceIndex, setTargetChoiceIndex] = useState<string | null>(null)
     // const [photoModalVisible, setPhotoModalVisible] = useState<boolean>(false)
-    
+
     // @TODO: REMOVE
     // const openPhotoModal = (choice_index: string) => () => {
     //     // target 선지 설정
@@ -63,7 +64,7 @@ export const ChoicesEditor = ({index:problem_index}:ChoicesEditorProps) => {
     //     setTargetChoiceIndex(null)
     //     setPhotoModalVisible(false)
     // }
-    
+
     // const okPhotoModal = () => {
     //     if(!targetChoiceIndex)
     //         return;
@@ -81,42 +82,53 @@ export const ChoicesEditor = ({index:problem_index}:ChoicesEditorProps) => {
     //     setTargetChoiceIndex(null)
     //     setPhotoModalVisible(false)
     // }
-    
 
     return (
-        <Box flexDirection="column" >
-            {choices.map(({index, question, answer, solution, description, photo}, i) => (
-                <Fragment key={i}>
-                <Box flexDirection="column" key={"choice"+i}>
-                    {/* 단원 선택 */}
-                    <Box alignItems="center">
-                        <Tag
-                            color="geekblue"
-                            children={index+"."}
-                        />
-                        <Text type="P1" content="소단원" marginHorizontal={6} marginBottom={4} /> 
-                        <Select
-                            showSearch
-                            filterOption={(input, option) => option?.includes(input)}
-                            onChange={setUnitinfo(index)}
-                            placeholder="단원을 선택해주세요."
-                            style={{width: 200}}
-                        >
-                            {units.map((unit) => (
-                                <Option value={unit.index} children={unit.title} key={unit.id} />
-                            ))}
-                        </Select>
-                    </Box>
+        <Box flexDirection="column">
+            {choices.map(
+                (
+                    { index, question, answer, solution, description, photo },
+                    i
+                ) => (
+                    <Fragment key={i}>
+                        <Box flexDirection="column" key={"choice" + i}>
+                            {/* 단원 선택 */}
+                            <Box alignItems="center">
+                                <Tag color="geekblue" children={index + "."} />
+                                <Text
+                                    type="P1"
+                                    content="소단원"
+                                    marginHorizontal={6}
+                                    marginBottom={4}
+                                />
+                                <Select
+                                    showSearch
+                                    filterOption={(input, option) =>
+                                        (option?.children + "").includes(input)
+                                    }
+                                    onChange={setUnitinfo(index)}
+                                    placeholder="단원을 선택해주세요."
+                                    style={{ width: 200 }}
+                                >
+                                    {units.map((unit) => (
+                                        <Option
+                                            value={unit.index}
+                                            children={unit.title}
+                                            key={unit.id}
+                                        />
+                                    ))}
+                                </Select>
+                            </Box>
 
-                    {/* 선지 설명 */}
-                    <Box marginTop={12} alignItems="center">
-                        <Input.TextArea
-                            placeholder="자료 설명"
-                            value={description}
-                            onChange={setDescription(index)}
-                        />
-                        {/* @TODO: Remove */}
-                        {/* <Button 
+                            {/* 선지 설명 */}
+                            <Box marginTop={12} alignItems="center">
+                                <Input.TextArea
+                                    placeholder="자료 설명"
+                                    value={description}
+                                    onChange={setDescription(index)}
+                                />
+                                {/* @TODO: Remove */}
+                                {/* <Button 
                             style={{marginLeft: 10}} 
                             onClick={openPhotoModal(index)} 
                             type={photo ? "default" : "primary"}
@@ -124,44 +136,42 @@ export const ChoicesEditor = ({index:problem_index}:ChoicesEditorProps) => {
                         >
                             선지 상세 이미지 {photo ? "수정" : "추가"}
                         </Button> */}
+                            </Box>
 
-                    </Box>
+                            {/* 문제(선지 내용) */}
+                            <Box alignItems="center" marginTop={12}>
+                                <Input
+                                    placeholder="선지 내용"
+                                    value={question}
+                                    onChange={setQuestion(index)}
+                                />
+                                <Text
+                                    type="P2"
+                                    align="right"
+                                    content="정답:"
+                                    style={{ width: 42 }}
+                                    marginHorizontal={12}
+                                />
+                                <Switch
+                                    checkedChildren="O"
+                                    unCheckedChildren="X"
+                                    checked={answer}
+                                    onChange={setAnswer(index)}
+                                />
+                            </Box>
 
-                    {/* 문제(선지 내용) */}
-                    <Box alignItems="center" marginTop={12}>
-                        <Input
-                            placeholder="선지 내용"
-                            value={question}
-                            onChange={setQuestion(index)}
-                        />
-                        <Text 
-                            type="P2"
-                            align="right"
-                            content="정답:"
-                            style={{width: 42}}
-                            marginHorizontal={12}
-                        />
-                        <Switch 
-                            checkedChildren="O"
-                            unCheckedChildren="X"
-                            checked={answer}
-                            onChange={setAnswer(index)}
-                        />
-                    </Box>
-                    
-                    <Box marginTop={12}>
-                        <Input.TextArea
-                            placeholder="정답 해설"
-                            autoSize={{ minRows: 2, maxRows: 2 }}
-                            value={solution}
-                            onChange={setSolution(index)}
-                        />
-                    </Box>
+                            <Box marginTop={12}>
+                                <Input.TextArea
+                                    placeholder="정답 해설"
+                                    autoSize={{ minRows: 2, maxRows: 2 }}
+                                    value={solution}
+                                    onChange={setSolution(index)}
+                                />
+                            </Box>
+                        </Box>
 
-                </Box>
-
-                {/* @TODO:: Remove */}
-                {/* <Modal 
+                        {/* @TODO:: Remove */}
+                        {/* <Modal 
                     visible={photoModalVisible} 
                     title={`선지 ${index}번 그림`} 
                     onCancel={cancelPhotoModal} 
@@ -176,9 +186,10 @@ export const ChoicesEditor = ({index:problem_index}:ChoicesEditorProps) => {
                         </Box>
                     )}
                 </Modal> */}
-                <Divider key={"divider"+i}  />
-                </Fragment>
-            ))}
+                        <Divider key={"divider" + i} />
+                    </Fragment>
+                )
+            )}
         </Box>
-    )
-}
+    );
+};
