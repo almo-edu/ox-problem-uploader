@@ -1,4 +1,4 @@
-import { Image, Tag } from "antd"
+import { Tag } from "antd"
 import { getSourceProblems } from "api/get-source-problems"
 import { ProblemCountBySourceProps, ProblemCountBySubjectProps } from "interfaces/problem-count.interface"
 import { IProblem } from "interfaces/problem-interface"
