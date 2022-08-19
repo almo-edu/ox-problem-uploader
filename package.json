@@ -20,6 +20,7 @@
     "compress.js": "1.2.2",
     "dayjs": "1.10.7",
     "immer": "9.0.12",
+    "mathjax-react": "^2.0.1",
     "pdf2pic": "2.1.4",
     "react": "^17.0.2",
     "react-csv-reader": "3.4.0",
