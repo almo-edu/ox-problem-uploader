@@ -1,8 +1,9 @@
-import { Divider, Input, Select, Switch, Tag } from "antd";
+import { Button, Divider, Input, Select, Switch, Tag } from "antd";
 import { useGetUnitListofCurrentSubject } from "atoms";
 import { examPNGProblemsState, useSetChoices } from "atoms/pngPhotos";
 import { Box, Text } from "materials";
-import { Fragment } from "react";
+import { MathJaxOrText } from "materials/MathJaxOrText";
+import { Fragment, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 interface ChoicesEditorProps {
@@ -24,6 +25,7 @@ export const ChoicesEditor = ({ index: problem_index }: ChoicesEditorProps) => {
     } = getSetter(problem_index);
 
     const units = useGetUnitListofCurrentSubject();
+    const [displayLatex, setDisplayLatex] = useState<boolean>(false);
 
     // @TODO: 전체 Remove
     // const [tempPhoto, setTempPhoto] = useState<IPhoto>(photo)
@@ -85,6 +87,13 @@ export const ChoicesEditor = ({ index: problem_index }: ChoicesEditorProps) => {
 
     return (
         <Box flexDirection="column">
+            <Button
+                type="primary"
+                style={{ width: 200, marginBottom: 10 }}
+                onClick={() => setDisplayLatex((prev) => !prev)}
+            >
+                {displayLatex ? `선지 Latex 가리기` : `선지 LaText 확인하기`}
+            </Button>
             {choices.map(
                 (
                     { index, question, answer, solution, description, photo },
@@ -137,7 +146,11 @@ export const ChoicesEditor = ({ index: problem_index }: ChoicesEditorProps) => {
                             선지 상세 이미지 {photo ? "수정" : "추가"}
                         </Button> */}
                             </Box>
-
+                            {displayLatex && description ? (
+                                <MathJaxOrText content={description} />
+                            ) : (
+                                ""
+                            )}
                             {/* 문제(선지 내용) */}
                             <Box alignItems="center" marginTop={12}>
                                 <Input
@@ -159,6 +172,11 @@ export const ChoicesEditor = ({ index: problem_index }: ChoicesEditorProps) => {
                                     onChange={setAnswer(index)}
                                 />
                             </Box>
+                            {displayLatex && question ? (
+                                <MathJaxOrText content={question} />
+                            ) : (
+                                ""
+                            )}
 
                             <Box marginTop={12}>
                                 <Input.TextArea
@@ -168,6 +186,11 @@ export const ChoicesEditor = ({ index: problem_index }: ChoicesEditorProps) => {
                                     onChange={setSolution(index)}
                                 />
                             </Box>
+                            {displayLatex && solution ? (
+                                <MathJaxOrText content={solution} />
+                            ) : (
+                                ""
+                            )}
                         </Box>
 
                         {/* @TODO:: Remove */}
